@@ -20,7 +20,7 @@ def test():
     return "Test request received successfully. Service is running."
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def home():
     return render_template("landing.html")
 
@@ -41,7 +41,8 @@ def predict():
             predictions, graph = bulk_prediction(predictor, scaler, cv, data)
 
             response = send_file(
-                predictions,
+                 predictions,
+                # graph,
                 mimetype="text/csv",
                 as_attachment=True,
                 download_name="Predictions.csv",
@@ -52,6 +53,7 @@ def predict():
             response.headers["X-Graph-Data"] = base64.b64encode(
                 graph.getbuffer()
             ).decode("ascii")
+            response.headers["Content-Type"]="application/json"
 
             return response
 

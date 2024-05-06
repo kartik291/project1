@@ -24,14 +24,16 @@ if st.button("Predict"):
         response_bytes = BytesIO(response.content)
         response_df = pd.read_csv(response_bytes)
 
-        st.download_button(
-            label="Download Predictions",
-            data=response_bytes,
-            file_name="Predictions.csv",
-            key="result_download_button",
-        )
+        # st.download_button(
+        #     label="Download Predictions",
+        #     data=response_bytes,
+        #     file_name="Predictions.csv",
+        #     key="result_download_button",
+        # )
+        st.write(response_df)
 
     else:
-        response = requests.post(prediction_endpoint, data={"text": user_input})
+        response = requests.post(prediction_endpoint, json={"text": user_input})
         response = response.json()
-        st.write(f"Predicted sentiment: {response['prediction']}")
+        st.write("Predicted sentiment:", response["prediction"])
+        # st.write(response);
